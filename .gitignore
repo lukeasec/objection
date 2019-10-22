@@ -62,3 +62,7 @@ python/
 
 # Ignore the compiled agent.
 objection/agent.js
+
+#ignore compiled mettle 
+plugins/mettle/mettle 
+.gitignore 
